@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Chandan Barik - Java Backend Developer">
+<meta property="og:description" content="Microservices, vector search and cloud systems built with Java, Spring Boot and AWS.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#07080b">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Chandan Barik - Java Backend Developer</title>
+<meta name="description" content="Chandan Barik, Java Backend Developer. Microservices, vector search and cloud systems built with Java, Spring Boot and AWS.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: a transit map. One line runs down the page, every section is a station on it,
+   and each body of work rides its own coloured line. Single committed dark look. */
+:root{
+  color-scheme:dark;
+  --ink:#07080b; --coal:#0d0f15; --slate:#161922; --rule:rgba(236,238,242,.1); --glass:rgba(22,25,34,.62);
+  --fg:#eceef2; --mute:#8f95a3; --dim:#5d6270;
+  --amber:#ffb238; --aqua:#3ed9c9; --coral:#ff5e7a; --violet:#9b8cff; --sky:#5aa9ff; --lime:#b6e35a; --peach:#ff9a62;
+  --acc:var(--amber);
+  --display:"Syne","Arial Black",system-ui,sans-serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --gl:max(16px,env(safe-area-inset-left,0px)); --gr:max(16px,env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--fg);font:400 16px/1.65 var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+h1,h2,h3,h4,p,ul,ol,dl,dd{margin:0}
+ul,ol{padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media(min-width:1100px){.wrap{padding-right:max(96px,env(safe-area-inset-right,0px))}}
+.mono{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase}
+.mute{color:var(--mute)}
+section{position:relative;padding-block:clamp(72px,11vw,150px)}
+.eyebrow{display:flex;align-items:center;gap:.7rem;color:var(--mute);margin-bottom:1.4rem}
+.eyebrow i{width:10px;height:10px;border-radius:50%;border:2px solid var(--acc);box-shadow:0 0 14px var(--acc)}
+h2{font:800 clamp(2.1rem,6vw,4.6rem)/1.02 var(--display);letter-spacing:-.02em;text-wrap:balance}
+h2 em{font-style:normal;color:var(--acc)}
+.lede{color:var(--mute);max-width:60ch;margin-top:1.1rem;font-size:1.05rem}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.veil{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(120% 80% at 70% 0%,rgba(155,140,255,.10),transparent 60%),radial-gradient(90% 60% at 0% 100%,rgba(62,217,201,.07),transparent 60%)}
+main,footer{position:relative;z-index:1}
+/* nav */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+.nav{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:9;padding-block:14px;padding-left:var(--gl);padding-right:var(--gr);display:flex;align-items:center;justify-content:space-between;gap:1rem;background:linear-gradient(var(--ink),transparent)}
+.logo{font:800 1.05rem var(--display);text-decoration:none;letter-spacing:.02em}
+.logo span{color:var(--amber)}
+.nav-r{display:flex;align-items:center;gap:.6rem}
+.pill{display:inline-flex;align-items:center;gap:.55rem;padding:.6rem 1.05rem;border:1px solid var(--rule);border-radius:999px;background:var(--glass);backdrop-filter:blur(10px);text-decoration:none;font-size:.85rem;font-weight:600;transition:border-color .25s,background .25s}
+.pill:hover{border-color:var(--amber)}
+.pill.solid{background:var(--fg);color:var(--ink);border-color:var(--fg)}
+.pill.solid:hover{background:var(--amber);border-color:var(--amber)}
+.progress{position:fixed;left:0;top:env(safe-area-inset-top,0px);height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--amber),var(--coral),var(--violet),var(--aqua));z-index:11}
+/* station rail */
+.rail{position:fixed;right:max(22px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);z-index:8;display:none}
+@media(min-width:1100px){.rail{display:block}}
+.rail ol{position:relative;display:flex;flex-direction:column;gap:22px}
+.rail ol::before{content:"";position:absolute;right:5px;top:6px;bottom:6px;width:2px;background:var(--rule)}
+.rail .train{position:absolute;right:1px;top:0;width:10px;height:18px;border-radius:5px;background:var(--amber);box-shadow:0 0 16px var(--amber);z-index:2;transform:translateY(0)}
+.rail a{display:flex;align-items:center;justify-content:flex-end;gap:.7rem;text-decoration:none;color:var(--dim);position:relative}
+.rail a b{font:500 .68rem var(--mono);letter-spacing:.1em;text-transform:uppercase;opacity:0;transform:translateX(6px);transition:.25s}
+.rail a i{width:12px;height:12px;border-radius:50%;background:var(--ink);border:2px solid var(--dim);transition:.25s;position:relative;z-index:1}
+.rail a:hover b,.rail a:focus-visible b,.rail a.on b{opacity:1;transform:none;color:var(--fg)}
+.rail a.on i{border-color:var(--amber)}
+/* menu dialog */
+dialog{color:var(--fg);border:0;padding:0;background:transparent;max-width:none;max-height:none}
+dialog::backdrop{background:rgba(4,5,8,.82);backdrop-filter:blur(8px)}
+#menu{width:100%;height:100%;margin:0}
+#menu .in{height:100%;display:flex;flex-direction:column;justify-content:center;gap:.2rem;padding:80px var(--gr) 40px var(--gl);max-width:900px;margin:auto}
+#menu a{font:800 clamp(1.8rem,6.5vw,3.6rem)/1.15 var(--display);text-decoration:none;display:flex;align-items:baseline;gap:1rem;color:var(--mute);transition:color .2s,transform .3s}
+#menu a:hover,#menu a:focus-visible{color:var(--fg);transform:translateX(12px)}
+#menu a small{font:500 .7rem var(--mono);color:var(--amber);letter-spacing:.1em}
+.x{position:absolute;top:calc(18px + env(safe-area-inset-top,0px));right:var(--gr)}
+/* hero */
+.hero{min-height:min(92svh,900px);display:flex;align-items:flex-end;padding-top:120px;padding-bottom:clamp(48px,8vw,96px)}
+.hero h1{font:800 clamp(3.2rem,13.5vw,11.5rem)/.86 var(--display);letter-spacing:-.045em;margin-left:-.04em}
+.hero h1 .l{display:block;overflow:hidden;padding-bottom:.08em}
+.hero h1 .l span{display:inline-block}
+.hero h1 .l:nth-child(2){color:transparent;-webkit-text-stroke:1.5px var(--fg);padding-left:clamp(0px,9vw,150px)}
+.hero-grid{display:grid;grid-template-columns:1fr;gap:2rem;margin-top:clamp(1.6rem,4vw,3rem);align-items:end}
+@media(min-width:860px){.hero-grid{grid-template-columns:1.2fr 1fr}}
+.hero .tag{font-size:clamp(1.05rem,2.1vw,1.45rem);line-height:1.4;max-width:30ch;font-weight:500}
+.hero .tag b{color:var(--amber);font-weight:600}
+.roles{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem}
+.chip{font:500 .72rem var(--mono);letter-spacing:.06em;padding:.38rem .7rem;border:1px solid var(--rule);border-radius:999px;color:var(--mute);background:rgba(13,15,21,.5)}
+.cta{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:flex-start}
+@media(min-width:860px){.cta{justify-content:flex-end}}
+.btn{position:relative;display:inline-flex;align-items:center;gap:.7rem;padding:1.05rem 1.6rem;border-radius:999px;font-weight:700;text-decoration:none;border:1px solid var(--fg);will-change:transform}
+.btn.fill{background:var(--fg);color:var(--ink)}
+.btn svg{width:16px;height:16px;transition:transform .3s}
+.btn:hover svg{transform:translate(3px,-3px)}
+.btn:hover{border-color:var(--amber)} .btn.fill:hover{background:var(--amber)}
+.scrollcue{position:absolute;left:var(--gl);bottom:18px;color:var(--dim)}
+/* about */
+#about{--acc:var(--amber)}
+.say{font:500 clamp(1.35rem,3.3vw,2.6rem)/1.28 var(--display);letter-spacing:-.01em;max-width:24ch;max-width:min(100%,26em)}
+.say span{opacity:1}
+.cards4{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:clamp(2.5rem,6vw,5rem)}
+.glass{background:var(--glass);border:1px solid var(--rule);backdrop-filter:blur(14px);border-radius:20px;padding:1.5rem}
+.cards4 .glass{display:flex;flex-direction:column;gap:.7rem;min-height:190px;transition:transform .4s,border-color .3s}
+.cards4 .glass:hover{border-color:var(--c)}
+.cards4 h3{font:700 1.15rem var(--display)}
+.cards4 .k{color:var(--c)}
+.cards4 p{color:var(--mute);font-size:.93rem;margin-top:auto}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.4rem 2rem;margin-top:2.6rem;padding-top:1.8rem;border-top:1px solid var(--rule)}
+.facts dt{color:var(--dim)} .facts dd{font-weight:600;margin-top:.25rem}
+/* work: horizontal line */
+#work{--acc:var(--aqua);padding-bottom:0}
+.hpin{overflow:hidden}
+.track{display:flex;flex-direction:column;gap:22px;padding-block:40px 80px;padding-left:var(--gl);padding-right:var(--gr)}
+.pj{--c:var(--aqua);flex:none;display:grid;grid-template-columns:1fr;gap:1.4rem;background:linear-gradient(160deg,rgba(22,25,34,.85),rgba(13,15,21,.9));border:1px solid var(--rule);border-radius:28px;padding:clamp(1.1rem,2.4vw,2rem);position:relative}
+.pj::after{content:"";position:absolute;left:28px;right:28px;top:-1px;height:2px;background:linear-gradient(90deg,var(--c),transparent)}
+.pv{perspective:1100px;min-width:0}
+.pv-in{aspect-ratio:16/10;max-width:100%;border-radius:18px;background:radial-gradient(120% 120% at 20% 0%,color-mix(in srgb,var(--c) 16%,transparent),transparent 60%),var(--coal);border:1px solid var(--rule);overflow:hidden;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d;display:block;width:100%}
+.pv-in svg{width:100%;height:100%;display:block;transform:translateZ(30px) scale(.94)}
+.pj-t{display:flex;flex-direction:column;gap:.9rem;min-width:0}
+.pj-t .mono{color:var(--c)}
+.pj h3{font:800 clamp(1.5rem,3.2vw,2.5rem)/1.05 var(--display);letter-spacing:-.02em;text-wrap:balance}
+.pj p{color:var(--mute);font-size:.96rem}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.open{margin-top:auto;align-self:flex-start;display:inline-flex;gap:.6rem;align-items:center;font-weight:700;padding:.75rem 1.15rem;border-radius:999px;border:1px solid var(--c);color:var(--c);transition:.25s}
+.open:hover{background:var(--c);color:var(--ink)}
+@media(min-width:960px){
+  .hmode .track{flex-direction:row;gap:28px;width:max-content;padding-block:28px 60px;align-items:stretch}
+  .hmode .pj{width:min(74vw,1020px);grid-template-columns:1.25fr 1fr;align-items:stretch}
+  .pj{grid-template-columns:1.25fr 1fr}
+  .hmode .endcap{width:38vw}
+}
+.endcap{flex:none;display:flex;flex-direction:column;justify-content:center;gap:1rem;padding:1.5rem}
+.endcap p{font:700 clamp(1.4rem,3vw,2.2rem)/1.15 var(--display)}
+/* case file dialog */
+#case{width:min(1080px,100%);max-height:100%;margin:auto;padding:max(12px,env(safe-area-inset-top,0px)) 12px 12px}
+#case .sheet{--c:var(--aqua);background:var(--coal);border:1px solid var(--rule);border-radius:26px;max-height:calc(100svh - 24px);overflow:auto;padding:clamp(1.2rem,3vw,2.6rem);position:relative}
+#case h3{font:800 clamp(1.8rem,5vw,3.4rem)/1.03 var(--display);letter-spacing:-.02em;margin:.6rem 0 1rem;padding-right:3rem}
+#case .sum{font-size:1.08rem;max-width:66ch;color:var(--fg)}
+#case .dg{margin:1.6rem 0;border:1px solid var(--rule);border-radius:18px;background:var(--ink);overflow-x:auto}
+#case .dg svg{display:block;width:100%;min-width:560px;height:auto}
+#case .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.6rem 2.4rem}
+#case h4{font:700 .78rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--c);margin-bottom:.6rem}
+#case li{color:var(--mute);font-size:.94rem;padding:.35rem 0 .35rem 1.1rem;position:relative}
+#case li::before{content:"";position:absolute;left:0;top:.95em;width:6px;height:2px;background:var(--c)}
+#case li b{color:var(--fg);font-weight:600}
+.close{position:absolute;top:1rem;right:1rem;width:44px;height:44px;border-radius:50%;border:1px solid var(--rule);display:grid;place-items:center;background:var(--slate);z-index:2}
+.close:hover{border-color:var(--amber)}
+/* skills */
+#skills{--acc:var(--violet)}
+.sk{display:grid;grid-template-columns:1fr;gap:2rem;margin-top:2.5rem;align-items:start}
+@media(min-width:980px){.sk{grid-template-columns:1.15fr 1fr}}
+.orbit{position:relative;aspect-ratio:1/1;max-width:100%;border-radius:28px;border:1px solid var(--rule);background:radial-gradient(circle at 50% 50%,rgba(155,140,255,.12),transparent 62%),var(--coal);overflow:hidden;touch-action:pan-y}
+.orbit canvas{width:100%;height:100%;display:block}
+.orbit .tip{position:absolute;left:0;top:0;pointer-events:none;padding:.5rem .75rem;border-radius:12px;background:var(--slate);border:1px solid var(--rule);font-size:.82rem;white-space:nowrap;transform:translate(-50%,-140%);z-index:2}
+.orbit .tip b{display:block;font-family:var(--display)}
+.orbit .hint{position:absolute;left:1rem;bottom:.8rem;color:var(--dim)}
+.cats{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.2rem}
+.cats button{padding:.5rem .85rem;border-radius:999px;border:1px solid var(--rule);font-size:.82rem;font-weight:600;color:var(--mute);display:inline-flex;gap:.5rem;align-items:center}
+.cats button i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.cats button[aria-pressed=true]{color:var(--ink);background:var(--c);border-color:var(--c)}
+.cats button[aria-pressed=true] i{background:var(--ink)}
+.sklist{display:grid;gap:1.3rem}
+.sklist h3{font:700 .78rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--c);margin-bottom:.5rem}
+.sklist li{display:grid;grid-template-columns:minmax(0,1fr) 3.2ch;gap:.2rem 1rem;align-items:center;padding:.32rem 0;font-size:.93rem;transition:opacity .3s}
+.sklist li span:nth-child(2){font:500 .78rem var(--mono);color:var(--mute);text-align:right;font-variant-numeric:tabular-nums}
+.sklist li u{grid-column:1/-1;height:2px;background:var(--rule);border-radius:2px;display:block;position:relative;text-decoration:none}
+.sklist li u::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--c);border-radius:2px}
+.sklist .off{opacity:.25}
+.note{font-size:.82rem;color:var(--dim);margin-top:1rem}
+.langs{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2.4rem}
+.langs div{padding:.8rem 1.1rem;border:1px solid var(--rule);border-radius:16px}
+.langs b{display:block;font-family:var(--display)} .langs span{font-size:.82rem;color:var(--mute)}
+/* path */
+#path{--acc:var(--coral)}
+.tl{position:relative;margin-top:3rem;padding-left:34px}
+.tl::before,.tl-fill{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--rule)}
+.tl-fill{background:linear-gradient(var(--coral),var(--amber));transform-origin:50% 0;transform:scaleY(1)}
+.tl h3.grp{font:700 .78rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:2.4rem 0 1rem}
+.tl h3.grp:first-of-type{margin-top:0}
+.stop{position:relative;margin-bottom:14px}
+.stop::before{content:"";position:absolute;left:-33px;top:1.55rem;width:16px;height:16px;border-radius:50%;background:var(--ink);border:3px solid var(--c,var(--coral))}
+.stop details{background:var(--glass);border:1px solid var(--rule);border-radius:20px;backdrop-filter:blur(12px)}
+.stop summary{list-style:none;cursor:pointer;padding:1.2rem 1.4rem;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.3rem 1rem;align-items:center}
+.stop summary::-webkit-details-marker{display:none}
+.stop summary h4{font:800 clamp(1.15rem,2.4vw,1.6rem)/1.15 var(--display)}
+.stop summary .at{color:var(--mute);font-size:.95rem}
+.stop summary .when{font:500 .75rem var(--mono);color:var(--c,var(--coral));letter-spacing:.06em;text-align:right}
+.stop summary .pm{grid-row:1/3;grid-column:2;width:38px;height:38px;border-radius:50%;border:1px solid var(--rule);display:grid;place-items:center;transition:transform .3s}
+.stop details[open] .pm{transform:rotate(45deg);border-color:var(--c,var(--coral))}
+.stop summary .when{grid-column:1;text-align:left}
+.stop .body{padding:0 1.4rem 1.4rem;display:grid;gap:1rem}
+.stop .body li{color:var(--mute);padding-left:1.1rem;position:relative;margin-bottom:.45rem;max-width:72ch}
+.stop .body li::before{content:"";position:absolute;left:0;top:.8em;width:6px;height:2px;background:var(--c,var(--coral))}
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:3rem}
+.duo h3{font:800 1.3rem var(--display);margin-bottom:1rem}
+.duo li{display:flex;justify-content:space-between;gap:1rem;padding:.7rem 0;border-top:1px solid var(--rule);font-size:.94rem}
+.duo li span:last-child{color:var(--mute);text-align:right;flex:none;max-width:60%}
+.duo .ach li{display:block}.duo .ach li span{display:block;text-align:left;max-width:none}
+.duo .ach b{font-weight:600}
+/* study */
+#study{--acc:var(--sky)}
+.stats{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem}
+.lab{display:grid;grid-template-columns:1fr;gap:16px;margin-top:2.4rem}
+@media(min-width:960px){.lab{grid-template-columns:300px minmax(0,1fr)}}
+.plist{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+@media(min-width:960px){.plist{flex-direction:column;overflow:visible;position:sticky;top:90px;align-self:start}}
+.plist button{flex:none;text-align:left;padding:.62rem .9rem;border-radius:12px;border:1px solid transparent;color:var(--mute);font-weight:600;font-size:.9rem;display:flex;gap:.7rem;align-items:center;white-space:nowrap}
+.plist button i{width:9px;height:9px;border-radius:50%;border:2px solid var(--dim);flex:none}
+.plist button:hover{color:var(--fg)}
+.plist button[aria-selected=true]{background:var(--slate);border-color:var(--rule);color:var(--fg)}
+.plist button[aria-selected=true] i{border-color:var(--sky);background:var(--sky);box-shadow:0 0 12px var(--sky)}
+.pd{min-width:0}
+.pd h3{font:800 clamp(1.6rem,3.6vw,2.6rem)/1.05 var(--display);letter-spacing:-.02em}
+.pd .what{margin-top:.9rem;max-width:70ch}
+.pd .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.4rem 2rem;margin-top:1.6rem}
+.pd h4{font:700 .76rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sky);margin-bottom:.5rem}
+.pd li{color:var(--mute);font-size:.93rem;padding:.28rem 0 .28rem 1rem;position:relative}
+.pd li::before{content:"";position:absolute;left:0;top:.9em;width:5px;height:2px;background:var(--sky)}
+.probs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px;margin-top:.4rem}
+.probs a{display:flex;justify-content:space-between;gap:.8rem;align-items:center;padding:.75rem .95rem;border:1px solid var(--rule);border-radius:12px;text-decoration:none;font-size:.9rem;font-weight:600;transition:.2s;min-width:0}
+.probs a:hover{border-color:var(--sky);transform:translateY(-2px)}
+.probs a span{min-width:0;overflow-wrap:anywhere}
+.probs svg{width:13px;height:13px;flex:none;color:var(--sky)}
+.viz{margin-top:1.6rem;border:1px solid var(--rule);border-radius:18px;padding:1.1rem;background:var(--coal)}
+.viz .rows{display:grid;gap:.9rem;overflow-x:auto;padding-bottom:.3rem}
+.viz .row{display:flex;gap:6px;align-items:center}
+.viz .row>b{font:500 .68rem var(--mono);color:var(--dim);width:64px;flex:none;text-transform:uppercase;letter-spacing:.06em}
+.cell{width:44px;height:44px;flex:none;border-radius:10px;border:1px solid var(--rule);display:grid;place-items:center;font:500 .95rem var(--mono);transition:.25s;position:relative}
+.cell.a{border-color:var(--amber);color:var(--amber);background:rgba(255,178,56,.1)}
+.cell.b{border-color:var(--coral);color:var(--coral);background:rgba(255,94,122,.1)}
+.cell.w{border-color:var(--sky);background:rgba(90,169,255,.12)}
+.cell.d{border-color:var(--aqua);color:var(--aqua)}
+.cell.e{color:var(--dim)}
+.viz .say2{margin-top:.9rem;min-height:3em;font-size:.92rem;color:var(--fg)}
+.viz .ctl{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+.viz .ctl button{padding:.5rem .9rem;border-radius:999px;border:1px solid var(--rule);font-size:.82rem;font-weight:600}
+.viz .ctl button:hover:not(:disabled){border-color:var(--sky)}
+.viz .ctl button:disabled{opacity:.35;cursor:default}
+.viz .ctl .mono{margin-left:auto;align-self:center;color:var(--dim)}
+/* services */
+#services{--acc:var(--lime)}
+.svc{margin-top:2.6rem;border-top:1px solid var(--rule)}
+.svc article{display:grid;grid-template-columns:1fr;gap:.8rem 2rem;padding:1.8rem 0;border-bottom:1px solid var(--rule);transition:padding .35s,background .35s}
+@media(min-width:900px){.svc article{grid-template-columns:1fr 1.1fr 1.2fr;align-items:start}.svc article:hover{padding-left:1.2rem;background:linear-gradient(90deg,rgba(182,227,90,.06),transparent)}}
+.svc h3{font:800 clamp(1.4rem,3vw,2.2rem)/1.05 var(--display)}
+.svc p{color:var(--mute)}
+.svc li{font-size:.92rem;padding:.25rem 0 .25rem 1.1rem;position:relative}
+.svc li::before{content:"";position:absolute;left:0;top:.9em;width:6px;height:2px;background:var(--lime)}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:2rem}
+.why h3{font:700 1.1rem var(--display);margin-bottom:.5rem}.why p{color:var(--mute);font-size:.93rem}
+/* contact */
+#contact{--acc:var(--amber);padding-bottom:60px}
+.big{font:800 clamp(2.6rem,10.5vw,9rem)/.9 var(--display);letter-spacing:-.04em}
+.big span{color:transparent;-webkit-text-stroke:1.5px var(--fg)}
+.cgrid{display:grid;grid-template-columns:1fr;gap:2.4rem;margin-top:3rem}
+@media(min-width:960px){.cgrid{grid-template-columns:1fr 1.1fr}}
+.ways{display:grid;gap:10px;align-content:start}
+.way{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.2rem;border:1px solid var(--rule);border-radius:16px;background:var(--glass);min-width:0}
+.way div{min-width:0}
+.way small{display:block;color:var(--dim)}
+.way b,.way a{font-weight:600;overflow-wrap:anywhere;user-select:all;text-decoration:none}
+.way a:hover{color:var(--amber)}
+.copy{flex:none;font:500 .7rem var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:.45rem .7rem;border:1px solid var(--rule);border-radius:999px;color:var(--mute)}
+.copy:hover{color:var(--fg);border-color:var(--amber)}
+form{display:grid;gap:14px}
+.f2{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+label{display:grid;gap:.4rem;font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+input,textarea{font:400 1rem var(--body);color:var(--fg);background:rgba(13,15,21,.7);border:1px solid var(--rule);border-radius:14px;padding:.9rem 1rem;width:100%;text-transform:none;letter-spacing:0}
+input:focus,textarea:focus{outline:none;border-color:var(--amber)}
+textarea{min-height:150px;resize:vertical}
+.hp{position:absolute;left:-9999px}
+.fmsg{font-size:.92rem;min-height:1.5em}
+.fmsg.ok{color:var(--aqua)}.fmsg.err{color:var(--coral)}
+footer{border-top:1px solid var(--rule);padding-block:26px;color:var(--dim);font-size:.85rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:.8rem 2rem;justify-content:space-between}
+/* cursor */
+.cur,.cur2{position:fixed;left:0;top:0;pointer-events:none;z-index:100;border-radius:50%;display:none}
+.cur{width:8px;height:8px;background:var(--amber);margin:-4px 0 0 -4px}
+.cur2{width:38px;height:38px;margin:-19px 0 0 -19px;border:1px solid rgba(236,238,242,.5);display:none;place-items:center;font:500 .6rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink);transition:width .25s,height .25s,margin .25s,background .25s,border-color .25s}
+.cur2 span{opacity:0;transition:opacity .2s}
+body.fine .cur{display:block} body.fine .cur2{display:grid}
+body.fine,body.fine a,body.fine button,body.fine summary{cursor:none}
+.cur2.link{width:56px;height:56px;margin:-28px 0 0 -28px;border-color:var(--amber);background:rgba(255,178,56,.12)}
+.cur2.label{width:84px;height:84px;margin:-42px 0 0 -42px;background:var(--amber);border-color:var(--amber)}
+.cur2.label span{opacity:1}
+.cur2.text{width:4px;height:30px;margin:-15px 0 0 -2px;border-radius:2px;background:var(--amber);border:0}
+#loader{position:fixed;inset:0;z-index:200;background:var(--ink);display:grid;place-items:center}
+#loader div{width:min(320px,70vw)}
+#loader b{font:800 clamp(3rem,10vw,5rem) var(--display);display:block;font-variant-numeric:tabular-nums}
+#loader u{display:block;height:2px;background:var(--rule);margin-top:.6rem;position:relative;text-decoration:none}
+#loader u::after{content:"";position:absolute;inset:0;background:var(--amber);transform-origin:0 50%;transform:scaleX(var(--p,0))}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<canvas id="bg" aria-hidden="true"></canvas><div class="veil" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cur" aria-hidden="true"></div><div class="cur2" aria-hidden="true"><span></span></div>
+
+<header class="nav">
+  <a class="logo" href="#top" aria-label="Chandan Barik, back to top">CB<span>.DEV</span></a>
+  <div class="nav-r">
+    <a class="pill" data-mag href="https://drive.google.com/file/d/11K4qd81Yef6EcFlLVQumwPIS8orNfgay/view?usp=sharing" target="_blank" rel="noopener noreferrer">Resume</a>
+    <button class="pill solid" data-mag id="menuBtn" aria-haspopup="dialog">Menu</button>
+  </div>
+</header>
+
+<nav class="rail" aria-label="Sections"><ol id="rail"><span class="train" id="train" aria-hidden="true"></span></ol></nav>
+
+<dialog id="menu" aria-label="Site menu"><div class="in" id="menuIn"></div><button class="close x" id="menuX" aria-label="Close menu">&#10005;</button></dialog>
+
+<main id="top">
+<section class="hero" id="home" data-st="Home">
+  <div class="wrap" style="width:100%">
+    <p class="mono mute" style="margin-bottom:1rem">Java Backend Developer &nbsp;/&nbsp; Odisha, India</p>
+    <h1 aria-label="Chandan Barik"><span class="l" aria-hidden="true"><span>Chandan</span></span><span class="l" aria-hidden="true"><span>Barik</span></span></h1>
+    <div class="hero-grid">
+      <div>
+        <p class="tag">Building scalable, high-performance applications with <b>Java</b>, <b>Spring Boot</b>, and <b>AWS</b>.</p>
+        <div class="roles"><span class="chip">Java Backend Developer</span><span class="chip">DSA Educator</span><span class="chip">Web Development Services</span></div>
+      </div>
+      <div class="cta">
+        <a class="btn fill" data-mag href="#work">Explore projects <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+        <a class="btn" data-mag href="#contact">Contact me <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12 12 4M5 4h7v7"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about" data-st="About">
+  <div class="wrap">
+    <p class="eyebrow mono"><i></i>About me</p>
+    <p class="say" id="say">Passionate and results-driven Java Backend Developer with experience in building scalable, high-performance applications. Proficient in Java, Spring Boot, and AWS, with expertise in microservices architecture and cloud-based solutions. Adept at integrating third-party APIs, optimizing backend systems, and enhancing application efficiency. A problem-solver with a strong foundation in data structures and system design.</p>
+    <div class="cards4" id="cards4"></div>
+    <dl class="facts">
+      <div><dt class="mono">Now</dt><dd>Java Backend Developer, Vaipratech Solutions</dd></div>
+      <div><dt class="mono">Since</dt><dd>October 2022, Remote/Chennai</dd></div>
+      <div><dt class="mono">Before</dt><dd>Software Engineer, Toshiba</dd></div>
+      <div><dt class="mono">Based in</dt><dd>Odisha, India</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section id="work" data-st="Projects">
+  <div class="wrap">
+    <p class="eyebrow mono"><i></i>Projects and systems</p>
+    <h2>Seven builds, <em>one line</em> at a time.</h2>
+    <p class="lede">System architectures I designed and implemented, search engines I tuned, and the projects that came before them. Open any case file for the full design.</p>
+  </div>
+  <div class="hpin" id="hpin"><div class="track" id="track"></div></div>
+</section>
+
+<section id="skills" data-st="Skills">
+  <div class="wrap">
+    <p class="eyebrow mono"><i></i>Technical skills</p>
+    <h2>A stack in <em>orbit</em>.</h2>
+    <p class="lede">My technical expertise and proficiency in various technologies. Each ring is a category; drag the system to turn it, or pick a ring.</p>
+    <div class="sk">
+      <div class="orbit" id="orbit" data-cur="Drag"><canvas id="orbitC" role="img" aria-label="Orbital diagram of 25 skills in five rings. The same skills are listed beside it."></canvas><div class="tip" id="tip" hidden></div><span class="hint mono">Drag to rotate</span></div>
+      <div><div class="cats" id="cats" role="group" aria-label="Highlight a skill category"></div><div class="sklist" id="sklist"></div><p class="note">Percentages are self-assessed proficiency.</p></div>
+    </div>
+    <div class="langs" id="langs"></div>
+  </div>
+</section>
+
+<section id="path" data-st="Path">
+  <div class="wrap">
+    <p class="eyebrow mono"><i></i>Experience and education</p>
+    <h2>The route <em>so far</em>.</h2>
+    <p class="lede">My professional journey building scalable applications and solving complex problems.</p>
+    <div class="tl" id="tl"><span class="tl-fill" id="tlFill" aria-hidden="true"></span></div>
+    <div class="duo" id="duo"></div>
+  </div>
+</section>
+
+<section id="study" data-st="Study">
+  <div class="wrap">
+    <p class="eyebrow mono"><i></i>Study with me</p>
+    <h2>Fifteen patterns that <em>unlock</em> DSA.</h2>
+    <p class="lede">Master common DSA patterns with concept notes and practice problems from LeetCode.</p>
+    <div class="stats" id="stats"></div>
+    <div class="lab"><div class="plist" id="plist" role="tablist" aria-label="DSA patterns"></div><div class="pd glass" id="pd" role="tabpanel" tabindex="0"></div></div>
+  </div>
+</section>
+
+<section id="services" data-st="Services">
+  <div class="wrap">
+    <p class="eyebrow mono"><i></i>Web development services</p>
+    <h2>Need a website? <em>I build those too.</em></h2>
+    <p class="lede">Professional websites for businesses and individuals at affordable rates.</p>
+    <div class="svc" id="svc"></div>
+    <div class="why" id="why"></div>
+    <p style="margin-top:2.2rem"><a class="btn fill" data-mag href="#contact">Get a quote <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12 12 4M5 4h7v7"/></svg></a></p>
+  </div>
+</section>
+
+<section id="contact" data-st="Contact">
+  <div class="wrap">
+    <p class="eyebrow mono"><i></i>Contact me</p>
+    <h2 class="big">Let's build <span>something.</span></h2>
+    <p class="lede">Have a project in mind or want to discuss a potential opportunity? Get in touch!</p>
+    <div class="cgrid">
+      <div class="ways">
+        <div class="way"><div><small class="mono">Email</small><a href="mailto:chandanbarikcb@gmail.com" id="vEmail">chandanbarikcb@gmail.com</a></div><button class="copy" data-copy="chandanbarikcb@gmail.com">Copy</button></div>
+        <div class="way"><div><small class="mono">Phone</small><a href="tel:+917017008199">+91 7017008199</a></div><button class="copy" data-copy="+917017008199">Copy</button></div>
+        <div class="way"><div><small class="mono">Location</small><b>Odisha, India</b></div></div>
+        <div class="way"><div><small class="mono">LinkedIn</small><a href="https://www.linkedin.com/in/chandanbarik/" target="_blank" rel="noopener noreferrer">linkedin.com/in/chandanbarik</a></div></div>
+        <div class="way"><div><small class="mono">GitHub</small><a href="https://github.com/imchandanbarik" target="_blank" rel="noopener noreferrer">github.com/imchandanbarik</a></div></div>
+        <div class="way"><div><small class="mono">Resume</small><a href="https://drive.google.com/file/d/11K4qd81Yef6EcFlLVQumwPIS8orNfgay/view?usp=sharing" target="_blank" rel="noopener noreferrer">Open on Google Drive</a></div></div>
+      </div>
+      <form id="form" novalidate>
+        <p class="mute">Fill out the form below and I'll get back to you as soon as possible.</p>
+        <div class="f2"><label for="f-name">Name<input id="f-name" name="name" autocomplete="name" required></label><label for="f-email">Email<input id="f-email" name="email" type="email" autocomplete="email" required></label></div>
+        <label for="f-subject">Subject<input id="f-subject" name="subject" required></label>
+        <label for="f-message">Message<textarea id="f-message" name="message" required></textarea></label>
+        <input class="hp" id="f-honey" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div><button class="btn fill" data-mag id="send" type="submit">Send message <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12 12 4M5 4h7v7"/></svg></button></div>
+        <p class="fmsg" id="fmsg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap"><span>&copy; <span id="yr">2026</span> Chandan Barik. All rights reserved.</span><span>Java Backend Developer</span></div></footer>
+
+<dialog id="case" aria-labelledby="caseT"><div class="sheet" id="sheet"></div></dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(()=>{"use strict";
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE=matchMedia('(hover: hover) and (pointer: fine)').matches;
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const ARROW='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12 12 4M5 4h7v7"/></svg>';
+$('#yr').textContent=new Date().getFullYear();
+
+/* ---------- content (all from the original site) ---------- */
+const EXPERTISE=[
+ ['Backend Development','Expertise in Java, Spring Boot, and microservices architecture for building robust backend systems.','--aqua'],
+ ['Database Management','Proficient in PostgreSQL, MongoDB, and database optimization for high-performance applications.','--amber'],
+ ['API Integration','Experience integrating third-party APIs and developing RESTful services for seamless connectivity.','--coral'],
+ ['Cloud Solutions','Skilled in AWS services including EC2, S3, SQS, and API Gateway for scalable cloud applications.','--violet']];
+const PROJECTS=[
+ {t:'Travel Application Microservices',k:'System architecture',c:'--aqua',
+  s:'Designed and implemented a scalable microservice architecture for a travel application, integrating multiple third-party APIs and services while ensuring high availability and performance.',
+  tags:['Spring Boot','Kafka','AWS SQS','Resilience4j','Redis','JWT'],
+  dg:{mode:'fan',rows:[['API Gateway'],['Auth Service','Flight Service','Metro Service','Booking Service'],['Auth DB','Flight DB','Metro DB','Booking DB']]},
+  d:[['Architecture overview',['This microservice architecture was designed to handle complex travel booking operations with high scalability and fault tolerance. The system processes thousands of concurrent requests while maintaining sub-second response times.']],
+     ['Key components',['<b>API Gateway:</b> the single entry point for all client requests, handling authentication, rate limiting, and request routing.','<b>Auth Service:</b> manages user authentication, authorization, and session management using JWT tokens.','<b>Flight Service:</b> integrates with multiple flight providers (ClearTrip, etc.) for real-time flight search, pricing, and booking.','<b>Metro Service:</b> metro journey planning with real-time updates, fare calculation, and optimal route finding.','<b>Booking Service:</b> the end-to-end booking process, payment processing, and booking management.']],
+     ['Technical implementation',['Built using Spring Boot microservices with event-driven communication via Kafka for asynchronous operations.','AWS SQS for reliable message queuing, and circuit breakers with Resilience4j for fault tolerance.']],
+     ['Scalability and performance',['Each service is independently scalable based on load.','Caching strategies with Redis minimize API calls to third-party services and improve response times.']]]},
+ {t:'Metro Journey Planner',k:'System architecture',c:'--amber',
+  s:'End-to-end system design for the metro journey planning service: optimal travel routes across metro networks, considering time, transfers, accessibility, and real-time conditions.',
+  tags:['A* and Dijkstra','Neo4j','PostgreSQL','MongoDB','Redis','React Native'],
+  dg:{mode:'trunk',labels:['User interface','API gateway','Services','Data'],rows:[['Mobile App','Web App','Kiosk UI','Voice UI','3rd Party Apps'],['Authentication','Rate Limiting','Request Routing','Caching'],['User','Station','Route','Schedule','Fare','Journey'],['Graph Database','PostgreSQL','MongoDB','Redis Cache']]},
+  d:[['User interface layer',['<b>Mobile and web apps:</b> React Native mobile app and React web interface with responsive design.','<b>Kiosk UI:</b> touchscreen interface optimized for public use with simplified journey planning.','<b>Voice UI:</b> voice-activated journey planning for accessibility compliance.','<b>3rd party integration:</b> API endpoints for third-party travel apps to access journey planning.']],
+     ['API gateway layer',['<b>Authentication:</b> JWT-based auth with role-based access control.','<b>Rate limiting:</b> tiered rate limiting based on user type and subscription.','<b>Request routing:</b> dynamic routing to appropriate microservices.','<b>Caching:</b> multi-level caching strategy with Redis for frequently requested routes.']],
+     ['Service layer',['<b>Route Service:</b> core service implementing A* and Dijkstra\'s algorithms for path finding.','<b>Schedule Service:</b> manages timetables and real-time updates from metro operations.','<b>Fare Service:</b> calculates journey costs based on distance, zones, and fare policies.','<b>Journey Service:</b> orchestrates the end-to-end journey planning process.']],
+     ['Data layer',['<b>Graph database:</b> Neo4j for storing the metro network topology.','<b>PostgreSQL:</b> relational data like schedules and fares.','<b>MongoDB:</b> user preferences and journey history.','<b>Redis cache:</b> high-speed caching of frequent routes and real-time updates.']],
+     ['Engines',['<b>Data processing layer:</b> ingests and processes metro station data, schedules, and real-time updates.','<b>Routing engine:</b> graph-based algorithms for optimal path finding with multiple constraints.']]]},
+ {t:'Vector Search System',k:'Advanced search',c:'--violet',
+  s:'Implemented high-performance vector search using embedding models to convert text into high-dimensional vectors, enabling semantic search capabilities beyond keyword matching.',
+  tags:['BERT','FAISS','KNN/ANN','Apache Camel','Spring Boot','Cosine similarity'],
+  dg:{mode:'chain',rows:[['Data Sources','Data Processing','Embedding Model'],['Vector Database','Search API','Client App']]},
+  d:[['What is vector search?',['Vector search converts content (text, images, audio) into numerical vectors in a high-dimensional space, where similar items are positioned closer together. This enables semantic search that understands the meaning behind queries rather than just matching keywords.']],
+     ['Implementation details',['<b>Data sources:</b> product catalogs, user-generated content, and third-party APIs.','<b>Data processing:</b> ETL pipelines using Apache Camel to clean, normalize, and prepare data for embedding.','<b>Text embedding:</b> BERT-based models convert text into 768-dimensional vectors, fine-tuned on domain-specific data to improve relevance.','<b>Vector database:</b> FAISS, optimized with IVF and PQ for sub-50ms query times on millions of vectors.','<b>Similarity search:</b> cosine similarity and KNN, with approximate nearest neighbor (ANN) search at scale.','<b>Query processing:</b> tokenizes and normalizes queries, handles spelling corrections, and expands queries with synonyms before embedding.','<b>Result ranking:</b> a hybrid system combining vector similarity with recency and popularity.','<b>Search API:</b> a RESTful API with Spring Boot for query processing, vector transformation, and result ranking.']],
+     ['Technical challenges solved',['Optimized vector indexing to reduce memory footprint by 70% while maintaining search accuracy above 95%.','Implemented incremental updates to avoid full reindexing when new items are added.','Designed a distributed architecture that scales horizontally to handle growing vector databases.','Created a caching layer that reduces query latency by 40% for common searches.']],
+     ['Performance and impact',['Over 95% semantic accuracy in search results compared to 70% with traditional keyword search.','Query response times average 45ms for a database with over 10 million vectors.','Improved search relevance by 35%, increased engagement with search results by 28%, and reduced bounce rates from search pages by 15%.']]]},
+ {t:'TypeAhead with Typesense',k:'Advanced search',c:'--coral',
+  s:'Developed a real-time typeahead search implementation using Typesense, optimized for sub-50ms response times even with large datasets, providing instant search suggestions.',
+  tags:['Typesense','Redis','Debounce','Prefix search','Typo tolerance'],
+  dg:{mode:'chain',rows:[['User Interface','API Gateway','Typesense Server'],['Debounce Logic','Query Processing','Indexed Data'],['Result Caching','Result Rendering','Search Analytics']]},
+  d:[['Overview',['TypeAhead search provides real-time suggestions as users type, reducing typing effort and guiding users toward relevant results before they complete their query.']],
+     ['Technical implementation',['<b>Typesense engine:</b> an open-source search engine optimized for instant search, configured with prefix search, typo tolerance, and weighted attributes.','<b>Debounce logic:</b> client-side debouncing with a 300ms delay prevents excessive API calls during rapid typing, reducing server load by 80%.','<b>Query processing:</b> tokenization, stopword removal, and query expansion to improve result relevance.','<b>Indexed data:</b> a schema optimized for typeahead with carefully selected fields and weights, plus incremental indexing for real-time updates.','<b>Result caching:</b> multi-level caching with Redis for frequent queries, reducing average response time from 45ms to 12ms.']],
+     ['Performance optimizations',['Sub-50ms response times for a catalog of over 5 million products.','Scoped searches narrow results based on user context and history.','A hybrid ranking algorithm combines text relevance with popularity signals.','A feedback loop uses click data to continuously improve result ranking.']],
+     ['Business impact',['A 42% increase in search usage, a 28% reduction in search abandonment, and a 15% increase in conversion rate from search results.']]]},
+ {t:'Shortest Pathfinder',k:'Project',c:'--sky',art:'grid',
+  s:'Visualized Dijkstra\'s algorithm using Pygame to find the shortest path between two points.',
+  tags:['Python','Pygame','Algorithms','Pathfinding'],d:[]},
+ {t:'Stock Analysis',k:'Project',c:'--lime',art:'wave',
+  s:'Implemented LSTM-based model to predict future stock prices with high accuracy.',
+  tags:['Python','TensorFlow','LSTM','Data Analysis'],d:[]},
+ {t:'Drowsiness Detection System',k:'Project',c:'--peach',art:'eye',
+  s:'Real-time detection of drowsiness/sleepiness using machine learning and computer vision.',
+  tags:['Python','OpenCV','Machine Learning','Computer Vision'],d:[]}];
+const SKILLS=[
+ ['Programming Languages','--amber',[['Java',90],['SQL',85],['C++',75],['JavaScript',70],['CSS',65]]],
+ ['Frameworks & Tools','--aqua',[['Spring Boot',90],['REST API',90],['JPA',85],['JUnit/Mockito',85],['MyBatis',80],['Kafka',80],['Apache Camel',75],['Docker',75]]],
+ ['Databases','--coral',[['PostgreSQL',85],['MongoDB',80]]],
+ ['Cloud & DevOps','--violet',[['Git',90],['AWS EC2',85],['AWS S3',80],['AWS API Gateway',80],['AWS SQS',75],['TDD',75]]],
+ ['Other','--sky',[['Data Structures',85],['Low-Level Design',80],['High-Level Design',75],['Vector Search',70]]]];
+const LANGS=[['English','Full Professional Proficiency'],['Hindi','Full Professional Proficiency'],['Odiya','Limited Working Proficiency']];
+const JOBS=[
+ {r:'Java Backend Developer',a:'Vaipratech Solutions',w:'October 2022 - Present',p:'Remote/Chennai',c:'--coral',
+  b:['Developed a complex travel application backend using microservice architecture from scratch.','Integrated with ONDC and designed metro service, including journey planner.','Integrated third-party travel service provider APIs (Flights, Cabs, Bus) from RedBus, ClearTrip.'],
+  t:['Spring Boot','JPA','MyBatis','PostgreSQL','MongoDB','AWS Gateway','Kafka','AWS SQS','EC2','S3','Vector Search']},
+ {r:'Software Engineer',a:'Toshiba',w:'May 2021 - October 2022',p:'',c:'--amber',
+  b:['Developed and maintained POS systems using Java, Spring Boot, Spring Batch, and MyBatis.','Led automation initiatives using Cucumber, Newman & Postman, reducing manual effort by 25% and saving 100+ man-hours monthly.','Designed high-level architecture and implemented scalable solutions for transactional processing.'],
+  t:['Java','Spring Boot','Spring Batch','MyBatis','Cucumber','Postman']}];
+const EDU=[
+ {r:'Bachelor of Technology (Computer Science)',a:'Chandigarh Engineering College, Mohali (Punjab Technical University)',w:'2018 - 2022',g:'CGPA: 8.9'},
+ {r:'Intermediate (PCM)',a:'NR Public School, Khurja (CBSE)',w:'2016 - 2017',g:'92%'},
+ {r:'High School',a:'Loyal Public School, Khurja (CBSE)',w:'2014 - 2015',g:'CGPA: 10'}];
+const CERTS=[['Google Digital Unlocked - Digital Marketing','July 2019'],['Google Web Designer Basics','June 2020'],['AWS - Machine Learning Essentials','April 2021'],['BCG - Data Science Internship','May 2021']];
+const ACH=[['Competitive Programming','CodeChef (3-star, 1635), LeetCode (100+ problems solved)'],['Certifications','IIT Bombay HTML, PHP, MySQL certification'],['Hackathons','Smart India Hackathon participant'],['Achievements','Qualified LinkedIn C++ assessment'],['Community & Events','Active participation in coding, sports, technical, and cultural events']];
+const SERVICES=[
+ ['Business Websites','Professional websites for businesses of all sizes, from small startups to established companies',['Responsive design that works on all devices','SEO optimization to improve visibility','Content management system integration','Contact forms and lead generation tools']],
+ ['Portfolio Websites','Showcase your work, skills, and achievements with a professionally designed portfolio website',['Customized design to match your personal brand','Project showcases with detailed descriptions','Resume/CV integration and downloadable options','Social media integration and contact options']],
+ ['Web Applications','Custom web applications with specific functionality tailored to your business needs',['Custom functionality based on your requirements','User authentication and account management','Database integration and data management','API development and third-party integrations']]];
+const WHY=[['Fast Delivery','Quick turnaround times without compromising on quality. Most projects completed within 2-4 weeks.'],['Affordable Rates','Competitive pricing tailored to your budget. Transparent pricing with no hidden fees.'],['Ongoing Support','Post-launch support and maintenance options to keep your website running smoothly.']];
+/* [name, one-liner, what, [heading, items], [heading, items], problem slugs, tags, leetcode tag, viz] */
+const PATTERNS=[
+ ['Prefix Sum','A technique to efficiently calculate cumulative sums in an array','Prefix Sum is a technique where we precompute the cumulative sum of elements in an array, allowing us to efficiently calculate the sum of any subarray in O(1) time after O(n) preprocessing.',['Key characteristics',['Precomputes cumulative sums from left to right','Enables O(1) time range sum queries','Requires O(n) preprocessing time','Uses O(n) extra space for the prefix sum array']],['When to use',['When you need to calculate sums of subarrays frequently','When you need to find subarrays with a specific sum','When you need to compute running averages or other cumulative statistics','In problems involving equilibrium points or balance points in arrays']],['range-sum-query-immutable','subarray-sum-equals-k','product-of-array-except-self','maximum-subarray','continuous-subarray-sum'],['Array','Cumulative Sum'],'prefix-sum','prefix'],
+ ['Two Pointer','A technique using two pointers to solve array problems efficiently','The Two Pointer technique uses two pointers to iterate through an array or list, usually moving them towards each other or in the same direction based on certain conditions. This approach can reduce time complexity from O(n²) to O(n) for many problems.',['Common patterns',['Opposite Direction: Start from both ends of array and move towards center','Same Direction: Both pointers move from left to right at different speeds','Sliding Window: A variation where window size changes based on conditions','Merge: Used in merge operations like in merge sort']],['When to use',['When dealing with sorted arrays','When searching for pairs in an array','When comparing strings or arrays','When you need to find subarrays that meet certain conditions','When you need to remove duplicates']],['two-sum','3sum','container-with-most-water','remove-duplicates-from-sorted-array','trapping-rain-water'],['Array','Sorting','Searching'],'two-pointers','two'],
+ ['Sliding Window','A technique to process subarrays or substrings efficiently','The Sliding Window pattern is used to perform operations on a specific window size of an array or string. The window can be fixed or variable size, and it "slides" through the data to efficiently process subarrays or substrings.',['Types of sliding windows',['Fixed Window: The window size remains constant throughout','Variable Window: The window size changes based on certain conditions','Dynamic Window: The window expands and contracts based on constraints']],['When to use',['When you need to find subarrays or substrings that meet certain conditions','When you need to calculate a running average or sum','When you need to find the longest/shortest substring with a specific property','When you need to find the maximum/minimum sum of a subarray of size k']],['maximum-subarray','longest-substring-without-repeating-characters','minimum-size-subarray-sum','sliding-window-maximum','permutation-in-string'],['Array','String','Subarray'],'sliding-window','window'],
+ ['Fast & Slow Pointer','A technique using two pointers moving at different speeds','The Fast & Slow Pointer technique (also known as Floyd\'s Tortoise and Hare algorithm) uses two pointers that move through a sequence at different speeds. Typically, the fast pointer moves twice as fast as the slow pointer.',['Key applications',['Cycle Detection: Determine if a linked list has a cycle','Cycle Start: Find the node where a cycle begins','Middle Element: Find the middle of a linked list in one pass','Palindrome Check: Check if a linked list is a palindrome']],['How it works',['Initialize two pointers, slow and fast, at the start of the sequence','Move the slow pointer one step at a time','Move the fast pointer two steps at a time','If there\'s a cycle, the fast pointer will eventually catch up to the slow pointer','If there\'s no cycle, the fast pointer will reach the end of the sequence']],['linked-list-cycle','linked-list-cycle-ii','middle-of-the-linked-list','happy-number','find-the-duplicate-number'],['Linked List','Cycle Detection','Two Pointers'],'two-pointers'],
+ ['Linked List In-Place Reversal','A technique to reverse linked lists or parts of linked lists','The Linked List In-Place Reversal pattern is used to reverse the direction of a linked list without using extra space. This technique can be applied to reverse an entire linked list or just a specific section of it.',['Key characteristics',['Reverses the direction of pointers in a linked list','Performs the reversal in-place (O(1) space complexity)','Can be applied to reverse the entire list or a sublist','Uses three pointers: previous, current, and next']],['When to use',['When you need to reverse a linked list or a part of it','When you need to reorder elements in a linked list','When solving problems that require changing the direction of links','When you need to check if a linked list is a palindrome']],['reverse-linked-list','reverse-linked-list-ii','reverse-nodes-in-k-group','palindrome-linked-list','swap-nodes-in-pairs'],['Linked List','In-Place','Reversal'],'linked-list'],
+ ['Monotonic Stack','A stack that maintains elements in increasing or decreasing order','A monotonic stack is a stack whose elements are monotonically increasing or decreasing. It\'s used to efficiently solve problems involving finding the next greater/smaller element or calculating spans.',['Key characteristics',['Monotonic Increasing Stack: Each element in the stack is greater than or equal to the element below it','Monotonic Decreasing Stack: Each element in the stack is smaller than or equal to the element below it','Time Complexity: O(n) for most problems, as each element is pushed and popped at most once','Space Complexity: O(n) for the stack']],['When to use',['Finding the next greater/smaller element','Finding the previous greater/smaller element','Finding the nearest element with a certain property','Problems involving histograms or temperature patterns','Problems requiring finding spans or ranges']],['next-greater-element-i','daily-temperatures','next-greater-element-ii','largest-rectangle-in-histogram','trapping-rain-water'],['Stack','Array','Monotonic'],'monotonic-stack'],
+ ['Top \'K\' Elements','A pattern to find the top or most frequent K elements','The Top \'K\' Elements pattern is used to find the k largest, smallest, most frequent, or least frequent elements in a collection. It typically uses a Heap data structure to efficiently track the top K elements.',['Key characteristics',['Min Heap: Used to find the K largest elements','Max Heap: Used to find the K smallest elements','Time Complexity: O(N log K) where N is the number of elements and K is the size of the heap','Space Complexity: O(K) for storing the heap']],['When to use',['Finding the K largest or smallest elements in an array','Finding the K most frequent elements','Finding the K closest points to a given point','Problems involving sorting based on frequency','Problems requiring partial sorting rather than complete sorting']],['kth-largest-element-in-an-array','top-k-frequent-elements','sort-characters-by-frequency','k-closest-points-to-origin','find-k-closest-elements'],['Heap','Priority Queue','Sorting'],'heap-priority-queue'],
+ ['Quick Select','An efficient algorithm to find the kth smallest/largest element','Quick Select is an efficient algorithm to find the kth smallest (or largest) element in an unsorted array. It\'s a variation of the QuickSort algorithm that only explores one side of the partition instead of both sides.',['Key characteristics',['Average Time Complexity: O(n), much better than sorting the entire array which would be O(n log n)','Worst Case Time Complexity: O(n²), occurs with poor pivot choices','Space Complexity: O(1) for iterative implementation, O(log n) for recursive implementation due to call stack','In-place: Operates directly on the input array without requiring additional storage']],['When to use',['Finding the kth smallest or largest element in an unsorted array','Finding the median of an unsorted array','When you need to partially sort an array','When memory usage is a concern (compared to heap-based solutions)','When average-case performance is more important than worst-case guarantees']],['kth-largest-element-in-an-array','k-closest-points-to-origin','top-k-frequent-elements','find-median-from-data-stream','find-k-pairs-with-smallest-sums'],['Array','Partition','Selection'],'quickselect'],
+ ['Overlapping Intervals','A pattern for solving interval-related problems efficiently','The Overlapping Intervals pattern is used to solve problems involving intervals with start and end points. It helps in efficiently handling operations like merging overlapping intervals, finding intersections, or determining if intervals overlap.',['Key characteristics',['Sorting: Usually involves sorting intervals by start or end times','Greedy Approach: Often uses greedy algorithms to make locally optimal choices','Time Complexity: Typically O(n log n) due to the sorting step','Space Complexity: Usually O(n) to store the result']],['When to use',['Merging overlapping intervals','Finding intersections between intervals','Determining if intervals overlap','Scheduling problems (meeting rooms, course scheduling)','Coverage problems (minimum number of intervals to cover a range)']],['merge-intervals','insert-interval','non-overlapping-intervals','meeting-rooms-ii','interval-list-intersections'],['Intervals','Sorting','Merging'],'interval'],
+ ['Modified Binary Search','Adaptations of binary search for complex scenarios','Modified Binary Search refers to adaptations of the standard binary search algorithm to handle more complex scenarios like rotated arrays, arrays with duplicates, or finding specific elements with certain properties rather than exact matches.',['Key characteristics',['Time Complexity: O(log n), maintains the efficiency of standard binary search','Space Complexity: O(1), typically uses constant extra space','Modified Conditions: Uses additional logic to determine which half to search','Divide and Conquer: Still follows the divide and conquer approach']],['When to use',['Searching in rotated sorted arrays','Finding the minimum or maximum element in a rotated array','Finding the first or last occurrence of an element','Searching in arrays with duplicates','Finding peak elements or local extrema','Searching in nearly sorted arrays']],['search-in-rotated-sorted-array','find-minimum-in-rotated-sorted-array','search-in-rotated-sorted-array-ii','find-peak-element','find-first-and-last-position-of-element-in-sorted-array'],['Binary Search','Rotated Array','Searching'],'binary-search'],
+ ['Depth-First Search (DFS)','A graph traversal algorithm that explores as far as possible along branches','Depth-First Search (DFS) is a graph traversal algorithm that explores as far as possible along each branch before backtracking. It uses a stack data structure (or recursion) to keep track of nodes to visit next.',['Key characteristics',['Traversal Strategy: Goes deep before going wide','Data Structure: Uses a stack (or recursion) to track nodes to visit','Time Complexity: O(V + E) where V is the number of vertices and E is the number of edges','Space Complexity: O(V) for the recursion stack or explicit stack','Implementation: Can be implemented recursively or iteratively']],['When to use',['Finding paths between two nodes','Detecting cycles in a graph','Topological sorting','Solving puzzles with only one solution (e.g., mazes)','Finding connected components','Analyzing networks']],['number-of-islands','course-schedule','clone-graph','pacific-atlantic-water-flow','word-search'],['Graph','Traversal','Recursion'],'depth-first-search'],
+ ['Breadth-First Search (BFS)','A graph traversal algorithm that explores all neighbors at the present depth','Breadth-First Search (BFS) is a graph traversal algorithm that explores all neighbors at the present depth before moving to nodes at the next depth level. It uses a queue data structure to keep track of nodes to visit next.',['Key characteristics',['Traversal Strategy: Goes wide before going deep','Data Structure: Uses a queue to track nodes to visit','Time Complexity: O(V + E) where V is the number of vertices and E is the number of edges','Space Complexity: O(V) for the queue and visited set','Shortest Path: Guarantees the shortest path in unweighted graphs']],['When to use',['Finding the shortest path in unweighted graphs','Level-order traversal of trees','Finding all nodes within a connected component','Testing if a graph is bipartite','Finding the shortest transformation sequence','Solving puzzles with the fewest moves']],['binary-tree-level-order-traversal','word-ladder','shortest-path-in-binary-matrix','rotting-oranges','walls-and-gates'],['Graph','Queue','Shortest Path'],'breadth-first-search'],
+ ['Matrix Traversal Pattern','Techniques for navigating and processing 2D arrays efficiently','Matrix traversal involves systematically visiting every cell in a 2D grid. Common traversal patterns include spiral order, diagonal traversal, and boundary traversal. This pattern is useful for problems involving grids, images, or game boards.',['Key characteristics',['Directional Movement: Uses combinations of up, down, left, and right movements','Boundary Tracking: Often requires tracking changing boundaries as traversal progresses','Time Complexity: O(m×n) where m and n are the dimensions of the matrix','Space Complexity: O(1) for the traversal logic, O(m×n) if storing visited cells']],['When to use',['When you need to process all elements in a 2D array in a specific order','When solving problems involving image processing or grid-based games','When you need to find paths or patterns in a 2D structure','When rotating or transforming matrices']],['spiral-matrix','rotate-image','set-matrix-zeroes'],['Matrix','Traversal','2D Array'],'matrix'],
+ ['Backtracking Pattern','A recursive approach to explore all potential solutions','Backtracking is an algorithmic technique for solving problems recursively by trying to build a solution incrementally, one piece at a time, removing those solutions that fail to satisfy the constraints of the problem at any point of time. It\'s essentially a "trial and error" approach but guided by rules that help prune the search space.',['Key characteristics',['Recursive Exploration: Systematically explores all possible solutions','Constraint Checking: Validates partial solutions against problem constraints','Pruning: Abandons paths that cannot lead to valid solutions','Time Complexity: Often exponential, but pruning can significantly reduce the search space']],['When to use',['When you need to find all (or some) solutions to a problem','When the problem can be broken down into a sequence of decisions','When each decision leads to a new subproblem','When the problem has constraints that can eliminate invalid paths early']],['n-queens','sudoku-solver','combination-sum','permutations'],['Recursion','Combinatorial','Search'],'backtracking'],
+ ['Dynamic Programming Pattern','Breaking down complex problems into simpler overlapping subproblems','Dynamic Programming (DP) is a method for solving complex problems by breaking them down into simpler subproblems. It is applicable when the problem has overlapping subproblems and optimal substructure properties. DP stores the results of subproblems to avoid redundant calculations, making it more efficient than naive recursive approaches.',['Key characteristics',['Overlapping Subproblems: Same subproblems are solved multiple times','Optimal Substructure: Optimal solution can be constructed from optimal solutions of its subproblems','Memoization/Tabulation: Storing results of subproblems to avoid recomputation','Bottom-up/Top-down: Two approaches to implement DP solutions']],['Types of DP problems',['1D DP: Problems where state depends on previous states in a single dimension (e.g., Fibonacci, Climbing Stairs)','2D DP: Problems where state depends on previous states in two dimensions (e.g., Grid Traversal, Edit Distance)','Knapsack Problems: Optimization problems with constraints (e.g., 0/1 Knapsack, Coin Change)','String DP: Problems involving string operations (e.g., Longest Common Subsequence, Palindromic Substrings)']],['climbing-stairs','coin-change','longest-increasing-subsequence','edit-distance'],['Memoization','Tabulation','Optimization'],'dynamic-programming']];
+
+/* ---------- about ---------- */
+$('#cards4').innerHTML=EXPERTISE.map(e=>`<article class="glass" style="--c:var(${e[2]})"><span class="mono k">${e[0].split(' ')[0]}</span><h3>${e[0]}</h3><p>${e[1]}</p></article>`).join('');
+
+/* ---------- diagrams ---------- */
+function diagram(dg,col){
+  const W=640,H=400,pad=22,lab=dg.labels?86:0,n=dg.rows.length,rh=(H-pad*2)/n,bh=Math.min(46,rh*.56);let s='',pos=[];
+  dg.rows.forEach((row,r)=>{const cw=(W-pad*2-lab)/row.length,bw=Math.min(cw-12,170);pos.push(row.map((t,i)=>({x:pad+lab+cw*i+cw/2,y:pad+rh*r+rh/2,bw,t})))});
+  const ln=(a,b)=>`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="${col}" stroke-opacity=".55" stroke-width="1.5"/>`;
+  if(dg.mode==='fan')for(let r=0;r<n-1;r++){const A=pos[r],B=pos[r+1];if(A.length===1)B.forEach(b=>s+=ln(A[0],b));else A.forEach((a,i)=>s+=ln(a,B[i]))}
+  if(dg.mode==='trunk')for(let r=0;r<n-1;r++)s+=ln({x:pad+lab+(W-pad*2-lab)/2,y:pos[r][0].y},{x:pad+lab+(W-pad*2-lab)/2,y:pos[r+1][0].y});
+  if(dg.mode==='chain'){const flat=pos.flat();for(let i=0;i<flat.length-1;i++)s+=ln(flat[i],flat[i+1])}
+  if(dg.mode==='trunk')pos.forEach(row=>{const a=row[0],b=row[row.length-1];s+=`<rect x="${a.x-a.bw/2-8}" y="${a.y-bh/2-8}" width="${b.x-a.x+a.bw+16}" height="${bh+16}" rx="14" fill="#0d0f15" stroke="${col}" stroke-opacity=".3"/>`});
+  pos.forEach((row,r)=>{if(dg.labels)s+=`<text x="${pad}" y="${row[0].y+4}" fill="#8f95a3" font-size="10.5" font-family="JetBrains Mono,monospace">${dg.labels[r].toUpperCase()}</text>`;
+    row.forEach(b=>{s+=`<rect x="${b.x-b.bw/2}" y="${b.y-bh/2}" width="${b.bw}" height="${bh}" rx="10" fill="#161922" stroke="${col}" stroke-opacity=".8"/><text x="${b.x}" y="${b.y+4}" text-anchor="middle" fill="#eceef2" font-size="${b.bw<92?10:12}" font-weight="600" font-family="Manrope,sans-serif">${b.t}</text>`})});
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Architecture diagram: ${dg.rows.map(r=>r.join(', ')).join('; ')}">${s}</svg>`;
+}
+function art(kind,col){let s='';const W=640,H=400;
+  if(kind==='grid'){const path=['1,5','2,5','2,4','3,4','4,4','4,3','5,3','6,3','6,2','7,2','8,2','8,1','9,1','10,1'],walls=['3,5','3,3','5,4','5,2','7,3','7,1','9,2','4,1','2,2','8,4','10,3'];
+    for(let y=0;y<7;y++)for(let x=0;x<12;x++){const k=x+','+y,p=path.includes(k),w=walls.includes(k),e=k===path[0]||k===path[path.length-1];
+      s+=`<rect x="${44+x*46}" y="${40+y*46}" width="40" height="40" rx="8" fill="${e?col:p?col:w?'#2a2e3a':'#12141b'}" fill-opacity="${e?1:p?.35:1}" stroke="${p?col:'#232733'}"/>`}}
+  if(kind==='wave'){let a='',b='';for(let i=0;i<=60;i++){const x=40+i*9.3,y=220-Math.sin(i/5)*48-i*1.5+Math.sin(i*1.7)*14,y2=224-Math.sin(i/5+.25)*46-i*1.5;a+=(i?'L':'M')+x+' '+y.toFixed(1);if(i>=38)b+=(i>38?'L':'M')+x+' '+y2.toFixed(1)}
+    for(let i=0;i<6;i++)s+=`<line x1="40" x2="600" y1="${70+i*52}" y2="${70+i*52}" stroke="#1d212b"/>`;
+    s+=`<path d="${a}" fill="none" stroke="#8f95a3" stroke-width="2"/><path d="${b}" fill="none" stroke="${col}" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/><line x1="393" x2="393" y1="50" y2="350" stroke="${col}" stroke-opacity=".5" stroke-dasharray="4 6"/>`}
+  if(kind==='eye'){s+=`<path d="M110 200Q320 60 530 200Q320 340 110 200Z" fill="#12141b" stroke="${col}" stroke-width="2.5"/><circle cx="320" cy="200" r="62" fill="none" stroke="${col}" stroke-width="2.5"/><circle cx="320" cy="200" r="24" fill="${col}"/>`;
+    [[110,200],[215,133],[320,112],[425,133],[530,200],[425,267],[320,288],[215,267]].forEach(p=>s+=`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#07080b" stroke="${col}" stroke-width="2"/>`);
+    s+=`<rect x="84" y="86" width="472" height="228" rx="14" fill="none" stroke="${col}" stroke-opacity=".4" stroke-dasharray="14 10"/>`}
+  return `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true">${s}</svg>`;
+}
+const visual=p=>p.dg?diagram(p.dg,css(p.c)):art(p.art,css(p.c));
+
+/* ---------- projects ---------- */
+$('#track').innerHTML=PROJECTS.map((p,i)=>`<article class="pj" style="--c:var(${p.c})">
+  <div class="pv"><button class="pv-in" data-open="${i}" data-cur="Open" aria-label="Open case file: ${p.t}">${visual(p)}</button></div>
+  <div class="pj-t"><span class="mono">${p.k}</span><h3>${p.t}</h3><p>${p.s}</p><div class="tags">${p.tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+  <button class="open" data-open="${i}">Open case file ${ARROW.replace('<svg','<svg width="14" height="14"')}</button></div></article>`).join('')+
+  `<div class="endcap"><p>More code lives on GitHub.</p><a class="btn" data-mag href="https://github.com/imchandanbarik" target="_blank" rel="noopener noreferrer">github.com/imchandanbarik ${ARROW}</a></div>`;
+const caseD=$('#case'),sheet=$('#sheet');
+function openCase(i){const p=PROJECTS[i];sheet.style.setProperty('--c',`var(${p.c})`);
+  sheet.innerHTML=`<button class="close" id="caseX" aria-label="Close case file">&#10005;</button><span class="mono" style="color:var(--c)">${p.k}</span><h3 id="caseT">${p.t}</h3><p class="sum">${p.s}</p>
+  <div class="dg">${visual(p)}</div><div class="tags" style="margin-bottom:1.8rem">${p.tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+  <div class="cols">${p.d.map(d=>`<div><h4>${d[0]}</h4><ul>${d[1].map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}</div>`;
+  caseD.showModal();sheet.scrollTop=0;$('#caseX').onclick=()=>caseD.close();}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(b)openCase(+b.dataset.open)});
+caseD.addEventListener('click',e=>{if(e.target===caseD)caseD.close()});
+if(FINE&&!RM)$$('.pv').forEach(v=>{const el=v.firstElementChild;v.addEventListener('mousemove',e=>{const r=v.getBoundingClientRect();el.style.setProperty('--ry',((e.clientX-r.left)/r.width-.5)*14+'deg');el.style.setProperty('--rx',-((e.clientY-r.top)/r.height-.5)*12+'deg')});v.addEventListener('mouseleave',()=>{el.style.setProperty('--ry','0deg');el.style.setProperty('--rx','0deg')})});
+
+/* ---------- skills ---------- */
+let activeCat=-1;
+$('#cats').innerHTML=SKILLS.map((c,i)=>`<button aria-pressed="false" data-cat="${i}" style="--c:var(${c[1]})"><i></i>${c[0]}</button>`).join('');
+$('#sklist').innerHTML=SKILLS.map((c,i)=>`<div data-g="${i}" style="--c:var(${c[1]})"><h3>${c[0]}</h3><ul>${c[2].map(s=>`<li><span>${s[0]}</span><span>${s[1]}%</span><u style="--w:${s[1]}%"></u></li>`).join('')}</ul></div>`).join('');
+$('#langs').innerHTML=LANGS.map(l=>`<div><b>${l[0]}</b><span>${l[1]}</span></div>`).join('');
+$('#cats').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.cat;activeCat=activeCat===i?-1:i;
+  $$('#cats button').forEach((x,j)=>x.setAttribute('aria-pressed',j===activeCat));$$('#sklist [data-g]').forEach((g,j)=>g.classList.toggle('off',activeCat>-1&&j!==activeCat));drawOrbit()});
+const oc=$('#orbitC'),octx=oc.getContext('2d'),orb=$('#orbit'),tip=$('#tip');
+let rotY=.5,rotX=1.05,ot=0,nodes=[],oVisible=false,hover=null,dragging=false;
+const cols=SKILLS.map(c=>css(c[1]));
+function sizeOrbit(){const d=Math.min(devicePixelRatio||1,2),r=orb.getBoundingClientRect();oc.width=r.width*d;oc.height=r.height*d;octx.setTransform(d,0,0,d,0,0)}
+function proj(x,y,z,S){let x1=x*Math.cos(rotY)-z*Math.sin(rotY),z1=x*Math.sin(rotY)+z*Math.cos(rotY),y1=y*Math.cos(rotX)-z1*Math.sin(rotX),z2=y*Math.sin(rotX)+z1*Math.cos(rotX);const f=2.6/(2.6+z2);return[S/2+x1*f*S*.46,S/2+y1*f*S*.46,f,z2]}
+function drawOrbit(){const S=orb.clientWidth;if(!S)return;octx.clearRect(0,0,S,S);nodes=[];
+  SKILLS.forEach((c,ci)=>{const r=.26+ci*.17,dim=activeCat>-1&&activeCat!==ci;octx.beginPath();for(let a=0;a<=64;a++){const an=a/64*Math.PI*2,p=proj(Math.cos(an)*r,0,Math.sin(an)*r,S);a?octx.lineTo(p[0],p[1]):octx.moveTo(p[0],p[1])}
+    octx.strokeStyle=cols[ci];octx.globalAlpha=dim?.08:.3;octx.lineWidth=1;octx.stroke();
+    c[2].forEach((s,si)=>{const an=si/c[2].length*Math.PI*2+ot*(.22-ci*.03)*(ci%2?-1:1)+ci,p=proj(Math.cos(an)*r,0,Math.sin(an)*r,S);nodes.push({x:p[0],y:p[1],f:p[2],z:p[3],n:s[0],v:s[1],ci,dim})})});
+  octx.globalAlpha=1;const g=octx.createRadialGradient(S/2,S/2,0,S/2,S/2,S*.09);g.addColorStop(0,'rgba(236,238,242,.9)');g.addColorStop(1,'rgba(236,238,242,0)');octx.fillStyle=g;octx.beginPath();octx.arc(S/2,S/2,S*.09,0,7);octx.fill();
+  nodes.sort((a,b)=>b.z-a.z).forEach(n=>{const rad=(3+n.v/100*7)*n.f*(S<420?.8:1);octx.globalAlpha=n.dim?.15:Math.min(1,.45+n.f*.5);octx.fillStyle=cols[n.ci];octx.beginPath();octx.arc(n.x,n.y,rad,0,7);octx.fill();
+    if(n===hover||(!n.dim&&(activeCat>-1||n.z<-.05)&&S>380)){octx.fillStyle='#eceef2';octx.font=`600 ${S<480?10:12}px Manrope,sans-serif`;octx.fillText(n.n,n.x+rad+5,n.y+4)}n.r=rad});octx.globalAlpha=1}
+function orbitLoop(){if(oVisible&&!dragging&&!hover&&!RM)ot+=.008;if(oVisible)drawOrbit();requestAnimationFrame(orbitLoop)}
+new IntersectionObserver(e=>{oVisible=e[0].isIntersecting;if(oVisible){sizeOrbit();drawOrbit()}}).observe(orb);
+addEventListener('resize',()=>{sizeOrbit();drawOrbit()});
+let lastP=null;
+orb.addEventListener('pointerdown',e=>{dragging=true;lastP=[e.clientX,e.clientY];orb.setPointerCapture(e.pointerId)});
+orb.addEventListener('pointerup',()=>dragging=false);orb.addEventListener('pointercancel',()=>dragging=false);
+orb.addEventListener('pointermove',e=>{const r=orb.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;
+  if(dragging&&lastP){rotY+=(e.clientX-lastP[0])*.008;rotX=Math.max(.5,Math.min(1.5,rotX+(e.clientY-lastP[1])*.005));lastP=[e.clientX,e.clientY]}
+  hover=null;let best=24;nodes.forEach(n=>{const d=Math.hypot(n.x-mx,n.y-my);if(d<best&&!n.dim){best=d;hover=n}});
+  if(hover){tip.hidden=false;tip.innerHTML=`<b>${hover.n}</b>${SKILLS[hover.ci][0]} · ${hover.v}%`;tip.style.left=hover.x+'px';tip.style.top=hover.y+'px'}else tip.hidden=true;if(RM)drawOrbit()});
+orb.addEventListener('pointerleave',()=>{hover=null;tip.hidden=true});
+sizeOrbit();orbitLoop();
+
+/* ---------- path ---------- */
+const stop=(o,open,job)=>`<div class="stop" style="--c:var(${o.c||'--violet'})"><details${open?' open':''}><summary><h4>${o.r}</h4><span class="pm" aria-hidden="true">+</span><span class="at">${o.a}</span><span class="when">${o.w}${o.p?' · '+o.p:''}${o.g?' · '+o.g:''}</span></summary>
+ <div class="body">${job?`<ul>${o.b.map(x=>`<li>${x}</li>`).join('')}</ul><div class="tags">${o.t.map(t=>`<span class="chip">${t}</span>`).join('')}</div>`:`<ul><li>${o.a}</li><li>${o.w}</li><li>Result: ${o.g}</li></ul>`}</div></details></div>`;
+$('#tl').insertAdjacentHTML('beforeend',`<h3 class="grp">Work experience</h3>${JOBS.map((j,i)=>stop(j,i===0,true)).join('')}<h3 class="grp">Education</h3>${EDU.map(e=>stop(e,false,false)).join('')}`);
+$('#duo').innerHTML=`<div class="glass"><h3>Certifications &amp; Training</h3><ul>${CERTS.map(c=>`<li><span>${c[0]}</span><span>${c[1]}</span></li>`).join('')}</ul></div>
+<div class="glass ach"><h3>Extracurricular &amp; Achievements</h3><ul>${ACH.map(a=>`<li><b>${a[0]}</b><span>${a[1]}</span></li>`).join('')}</ul></div>`;
+
+/* ---------- study ---------- */
+const nice=s=>s.split('-').map(w=>({ii:'II',i:'I','3sum':'3Sum',k:'K',n:'N'}[w]||w[0].toUpperCase()+w.slice(1))).join(' ');
+const total=PATTERNS.reduce((a,p)=>a+p[5].length,0);
+$('#stats').innerHTML=[`${PATTERNS.length} DSA patterns`,`${total} practice problems`,'3 step-through visualizations'].map(s=>`<span class="chip">${s}</span>`).join('');
+$('#plist').innerHTML=PATTERNS.map((p,i)=>`<button role="tab" id="pt${i}" aria-selected="${!i}" aria-controls="pd" tabindex="${i?-1:0}" data-p="${i}"><i></i>${p[0]}</button>`).join('');
+const VIZ={
+ prefix(){const a=[3,1,4,1,5,9,2,6],st=[],p=[];st.push({rows:[['Array',a.map(v=>[v,''])],['Prefix',a.map(()=>['','e'])]],n:'Start with an empty prefix array. Each slot will hold the sum of everything up to that index.'});
+  a.forEach((v,i)=>{p[i]=(p[i-1]||0)+v;st.push({rows:[['Array',a.map((x,j)=>[x,j===i?'a':''])],['Prefix',a.map((_,j)=>[j<=i?p[j]:'',j===i?'d':j===i-1?'w':j<i?'':'e'])]],n:i?`prefixSum[${i}] = prefixSum[${i-1}] + arr[${i}] = ${p[i-1]} + ${v} = ${p[i]}`:`prefixSum[0] = arr[0] = ${v}`})});
+  st.push({rows:[['Array',a.map((x,j)=>[x,j>=2&&j<=5?'a':''])],['Prefix',p.map((x,j)=>[x,j===5?'d':j===1?'b':''])]],n:`Range query in O(1): sum(2,5) = prefixSum[5] - prefixSum[1] = ${p[5]} - ${p[1]} = ${p[5]-p[1]}`});return st},
+ two(){const a=[1,3,4,6,8,10,13],T=14,st=[];let l=0,r=a.length-1;st.push({rows:[['Sorted',a.map(v=>[v,''])]],n:`Find two numbers that add up to ${T}. One pointer starts at each end.`});
+  while(l<r){const s=a[l]+a[r];st.push({rows:[['Sorted',a.map((v,j)=>[v,j===l?'a':j===r?'b':j<l||j>r?'e':''])]],n:`left = ${a[l]}, right = ${a[r]}, sum = ${s}. ${s===T?'Match found.':s<T?'Too small, move left pointer right.':'Too large, move right pointer left.'}`});if(s===T)break;s<T?l++:r--}return st},
+ window(){const a=[2,1,5,1,3,2,6,4],k=3,st=[];let best=-1,bi=0,sum=0;st.push({rows:[['Array',a.map(v=>[v,''])]],n:`Find the maximum sum of any ${k} consecutive elements by sliding a fixed window.`});
+  for(let i=0;i<a.length;i++){sum+=a[i];if(i>=k)sum-=a[i-k];if(i>=k-1){if(sum>best){best=sum;bi=i-k+1}
+   st.push({rows:[['Array',a.map((v,j)=>[v,j>i-k&&j<=i?'w':''])]],n:`Window [${i-k+1}..${i}] sum = ${sum}${i>=k?` (added ${a[i]}, dropped ${a[i-k]})`:''}. Best so far: ${best}.`})}}
+  st.push({rows:[['Array',a.map((v,j)=>[v,j>=bi&&j<bi+k?'d':''])]],n:`Maximum window sum is ${best}, at indices ${bi} to ${bi+k-1}.`});return st}};
+let vTimer=null;
+function showPattern(i,focus){clearInterval(vTimer);const p=PATTERNS[i];
+  $$('#plist button').forEach((b,j)=>{b.setAttribute('aria-selected',j===i);b.tabIndex=j===i?0:-1});$('#pd').setAttribute('aria-labelledby','pt'+i);
+  $('#pd').innerHTML=`<span class="mono mute">${p[6].join(' · ')}</span><h3>${p[0]}</h3><p class="mute" style="margin-top:.4rem">${p[1]}</p><p class="what">${p[2]}</p>
+  ${p[8]?`<div class="viz" id="viz"><h4>Step-through visualization</h4><div class="rows" id="vrows"></div><p class="say2" id="vsay" aria-live="polite"></p><div class="ctl"><button id="vPrev">Previous</button><button id="vPlay">Play</button><button id="vNext">Next</button><button id="vReset">Reset</button><span class="mono" id="vCount"></span></div></div>`:''}
+  <div class="g"><div><h4>${p[3][0]}</h4><ul>${p[3][1].map(x=>`<li>${x}</li>`).join('')}</ul></div><div><h4>${p[4][0]}</h4><ul>${p[4][1].map(x=>`<li>${x}</li>`).join('')}</ul></div></div>
+  <h4 style="margin-top:1.8rem">Practice problems</h4><div class="probs">${p[5].map(s=>`<a href="https://leetcode.com/problems/${s}/" target="_blank" rel="noopener noreferrer"><span>${nice(s)}</span>${ARROW}</a>`).join('')}
+  <a href="https://leetcode.com/tag/${p[7]}/" target="_blank" rel="noopener noreferrer" style="border-style:dashed"><span>More problems on LeetCode</span>${ARROW}</a></div>`;
+  if(p[8]){const steps=VIZ[p[8]]();let k=0;const draw=()=>{const s=steps[k];$('#vrows').innerHTML=s.rows.map(r=>`<div class="row"><b>${r[0]}</b>${r[1].map(c=>`<span class="cell ${c[1]}">${c[0]}</span>`).join('')}</div>`).join('');$('#vsay').textContent=s.n;$('#vCount').textContent=`Step ${k+1} / ${steps.length}`;$('#vPrev').disabled=!k;$('#vNext').disabled=k===steps.length-1};
+    const stopP=()=>{clearInterval(vTimer);vTimer=null;$('#vPlay').textContent='Play'};
+    $('#vPrev').onclick=()=>{stopP();k=Math.max(0,k-1);draw()};$('#vNext').onclick=()=>{stopP();k=Math.min(steps.length-1,k+1);draw()};$('#vReset').onclick=()=>{stopP();k=0;draw()};
+    $('#vPlay').onclick=()=>{if(vTimer)return stopP();if(k===steps.length-1)k=0;$('#vPlay').textContent='Pause';draw();vTimer=setInterval(()=>{if(k>=steps.length-1)return stopP();k++;draw()},1300)};draw()}
+  if(focus)$('#pt'+i).focus()}
+$('#plist').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showPattern(+b.dataset.p)});
+$('#plist').addEventListener('keydown',e=>{const i=+document.activeElement.dataset.p;if(isNaN(i))return;const d={ArrowDown:1,ArrowRight:1,ArrowUp:-1,ArrowLeft:-1}[e.key];if(d){e.preventDefault();showPattern((i+d+PATTERNS.length)%PATTERNS.length,true)}});
+showPattern(0);
+
+/* ---------- services ---------- */
+$('#svc').innerHTML=SERVICES.map(s=>`<article><h3>${s[0]}</h3><p>${s[1]}</p><ul>${s[2].map(f=>`<li>${f}</li>`).join('')}</ul></article>`).join('');
+$('#why').innerHTML=WHY.map(w=>`<div class="glass"><h3>${w[0]}</h3><p>${w[1]}</p></div>`).join('');
+
+/* ---------- nav, rail, menu ---------- */
+const secs=$$('main section[data-st]'),rail=$('#rail'),menu=$('#menu');
+rail.insertAdjacentHTML('beforeend',secs.map(s=>`<li><a href="#${s.id}"><b>${s.dataset.st}</b><i></i></a></li>`).join(''));
+$('#menuIn').innerHTML=secs.map((s,i)=>`<a href="#${s.id}"><small>${String(i+1).padStart(2,'0')}</small>${s.dataset.st}</a>`).join('');
+$('#menuBtn').onclick=()=>menu.showModal();$('#menuX').onclick=()=>menu.close();
+$('#menuIn').addEventListener('click',e=>{if(e.target.closest('a'))menu.close()});
+const railLinks=$$('#rail a'),train=$('#train'),prog=$('#progress');
+function onScroll(){const max=document.documentElement.scrollHeight-innerHeight,p=max>0?scrollY/max:0;prog.style.transform=`scaleX(${p})`;
+  let cur=0;secs.forEach((s,i)=>{if(s.getBoundingClientRect().top<innerHeight*.45)cur=i});
+  railLinks.forEach((a,i)=>{a.classList.toggle('on',i===cur);if(i===cur)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current')});
+  const li=railLinks[cur].parentElement;train.style.transform=`translateY(${li.offsetTop-3}px)`;train.style.transition=RM?'none':'transform .5s cubic-bezier(.2,.8,.2,1)';window.__p=p}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+/* ---------- cursor + magnetic ---------- */
+if(FINE&&!RM){document.body.classList.add('fine');const c1=$('.cur'),c2=$('.cur2'),lab=$('.cur2 span');let mx=innerWidth/2,my=innerHeight/2,x=mx,y=my;
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;c1.style.transform=`translate(${mx}px,${my}px)`;
+    const t=e.target.closest('[data-cur],a,button,summary,input,textarea');c2.className='cur2';lab.textContent='';
+    if(t){if(t.dataset.cur){c2.classList.add('label');lab.textContent=t.dataset.cur}else if(t.matches('input,textarea'))c2.classList.add('text');else c2.classList.add('link')}});
+  (function loop(){x+=(mx-x)*.16;y+=(my-y)*.16;c2.style.transform=`translate(${x}px,${y}px)`;requestAnimationFrame(loop)})();
+  $$('[data-mag]').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.28}px,${(e.clientY-r.top-r.height/2)*.4}px)`;b.style.transition='transform .1s'});
+    b.addEventListener('mouseleave',()=>{b.style.transition='transform .5s cubic-bezier(.2,1.6,.4,1)';b.style.transform=''})});}
+
+/* ---------- copy + form ---------- */
+$$('[data-copy]').forEach(b=>b.onclick=async()=>{try{await navigator.clipboard.writeText(b.dataset.copy);b.textContent='Copied'}catch(e){const n=b.previousElementSibling.querySelector('a,b'),r=document.createRange();r.selectNodeContents(n);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected'}setTimeout(()=>b.textContent='Copy',1800)});
+const form=$('#form'),fmsg=$('#fmsg');
+form.addEventListener('submit',async e=>{e.preventDefault();fmsg.className='fmsg';
+  const d=Object.fromEntries(new FormData(form));if(d._honey)return;
+  for(const k of['name','email','subject','message'])if(!d[k].trim()){fmsg.textContent=`Please add your ${k}.`;fmsg.classList.add('err');$('#f-'+k).focus();return}
+  if(!/^\S+@\S+\.\S+$/.test(d.email)){fmsg.textContent='That email address looks incomplete.';fmsg.classList.add('err');$('#f-email').focus();return}
+  const btn=$('#send');btn.disabled=true;fmsg.textContent='Sending...';
+  try{const r=await fetch('https://formsubmit.co/ajax/chandanbarikcb@gmail.com',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({name:d.name,email:d.email,_subject:'Portfolio Contact: '+d.subject,message:d.message})});
+    const j=await r.json();if(!r.ok||String(j.success)!=='true')throw 0;fmsg.textContent="Message sent! Thank you for your message. I'll get back to you soon.";fmsg.classList.add('ok');form.reset()}
+  catch(err){fmsg.textContent='The message could not be sent from here. Please email chandanbarikcb@gmail.com directly.';fmsg.classList.add('err')}
+  btn.disabled=false});
+
+/* ---------- 3D transit network ---------- */
+(function(){const cv=$('#bg');if(!window.THREE){cv.remove();return}let R;try{R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance'})}catch(e){cv.remove();return}
+  R.setPixelRatio(Math.min(devicePixelRatio||1,1.75));const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x07080b,.028);
+  const cam=new THREE.PerspectiveCamera(50,1,.1,120);cam.position.set(0,0,20);const G=new THREE.Group();scene.add(G);
+  const dot=document.createElement('canvas');dot.width=dot.height=64;const dc=dot.getContext('2d'),gr=dc.createRadialGradient(32,32,0,32,32,32);gr.addColorStop(0,'#fff');gr.addColorStop(.35,'rgba(255,255,255,.7)');gr.addColorStop(1,'rgba(255,255,255,0)');dc.fillStyle=gr;dc.fillRect(0,0,64,64);const tex=new THREE.CanvasTexture(dot);
+  let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  const lineCols=['--amber','--aqua','--coral','--violet','--sky','--lime'].map(css),paths=[],sp=[],sc=[];
+  lineCols.forEach((hex,li)=>{const col=new THREE.Color(hex),pts=[];let x=-20+rnd()*6,y=-9+li*3.6+rnd()*2,z=-8+rnd()*10;pts.push(new THREE.Vector3(x,y,z));
+    for(let i=0;i<9;i++){const dir=Math.floor(rnd()*3)-1,len=3+rnd()*3.5;x+=len;y+=dir*len*.75;z+=(rnd()-.5)*4;y=Math.max(-13,Math.min(13,y));pts.push(new THREE.Vector3(x,y,z))}
+    const cp=new THREE.CurvePath();for(let i=0;i<pts.length-1;i++)cp.add(new THREE.LineCurve3(pts[i],pts[i+1]));
+    G.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),new THREE.LineBasicMaterial({color:col,transparent:true,opacity:.5})));
+    pts.forEach(p=>{sp.push(p.x,p.y,p.z);sc.push(col.r,col.g,col.b)});paths.push({cp,col})});
+  const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.Float32BufferAttribute(sp,3));sg.setAttribute('color',new THREE.Float32BufferAttribute(sc,3));
+  const pm=s=>new THREE.PointsMaterial({size:s,map:tex,vertexColors:true,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending});
+  G.add(new THREE.Points(sg,pm(.75)));
+  const TR=4,tp=new Float32Array(paths.length*TR*3),tc=[];paths.forEach(p=>{for(let i=0;i<TR;i++)tc.push(p.col.r,p.col.g,p.col.b)});
+  const tg=new THREE.BufferGeometry();tg.setAttribute('position',new THREE.BufferAttribute(tp,3));tg.setAttribute('color',new THREE.Float32BufferAttribute(tc,3));G.add(new THREE.Points(tg,pm(1.5)));
+  const dp=[];for(let i=0;i<500;i++)dp.push((rnd()-.5)*70,(rnd()-.5)*44,(rnd()-.5)*40);const dg=new THREE.BufferGeometry();dg.setAttribute('position',new THREE.Float32BufferAttribute(dp,3));
+  scene.add(new THREE.Points(dg,new THREE.PointsMaterial({size:.09,color:0x8f95a3,transparent:true,opacity:.6,depthWrite:false})));
+  const v=new THREE.Vector3();let mx=0,my=0,tx=0,ty=0,t=0,run=true;
+  function size(){R.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}
+  function frame(){t+=.0016;paths.forEach((p,li)=>{for(let i=0;i<TR;i++){p.cp.getPointAt((t*(1+li*.13)+i/TR+li*.07)%1,v);tp.set([v.x,v.y,v.z],(li*TR+i)*3)}});tg.attributes.position.needsUpdate=true;
+    tx+=(mx-tx)*.04;ty+=(my-ty)*.04;const p=window.__p||0;G.rotation.y=tx*.22+p*1.1-.25;G.rotation.x=ty*.14+p*.35;G.position.x=-p*6;cam.position.z=20-p*5;cv.style.opacity=String(1-Math.min(.62,p*3.2));R.render(scene,cam)}
+  function loop(){if(run)frame();requestAnimationFrame(loop)}
+  addEventListener('resize',size);addEventListener('mousemove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+  document.addEventListener('visibilitychange',()=>run=!document.hidden);size();
+  if(RM){frame();addEventListener('scroll',frame,{passive:true})}else loop();})();
+
+/* ---------- motion ---------- */
+if(window.gsap&&window.ScrollTrigger&&!RM){gsap.registerPlugin(ScrollTrigger);
+  const intro=()=>{gsap.from('.hero h1 .l span',{yPercent:110,duration:1.1,ease:'expo.out',stagger:.12});gsap.from('.hero .mono,.hero-grid>*',{y:24,opacity:0,duration:.9,ease:'power3.out',stagger:.1,delay:.35})};
+  const L=document.createElement('div');L.id='loader';L.innerHTML='<div><span class="mono mute">Chandan Barik / Loading</span><b>0</b><u></u></div>';document.body.appendChild(L);
+  const o={v:0};gsap.to(o,{v:100,duration:.9,ease:'power2.inOut',onUpdate(){L.querySelector('b').textContent=Math.round(o.v);L.style.setProperty('--p',o.v/100)},onComplete(){gsap.to(L,{yPercent:-100,duration:.7,ease:'expo.inOut',onComplete(){L.remove()}});intro()}});
+  const say=$('#say');say.innerHTML=say.textContent.split(' ').map(w=>`<span>${w}</span>`).join(' ');
+  gsap.fromTo('#say span',{opacity:.18},{opacity:1,stagger:.05,ease:'none',scrollTrigger:{trigger:say,start:'top 82%',end:'bottom 45%',scrub:.6}});
+  $$('section h2,.lede,.cards4 .glass,.facts>div,.stop,.duo>div,.svc article,.why>div,.way,.lab,.sk>*,.langs>div').forEach(el=>gsap.from(el,{y:38,opacity:.15,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 92%',once:true}}));
+  gsap.fromTo('#tlFill',{scaleY:0},{scaleY:1,ease:'none',scrollTrigger:{trigger:'#tl',start:'top 70%',end:'bottom 60%',scrub:.5}});
+  gsap.to('.hero h1',{yPercent:-18,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+  ScrollTrigger.matchMedia({'(min-width: 960px)'(){const hp=$('#hpin'),tr=$('#track');hp.classList.add('hmode');const dist=()=>Math.max(0,tr.scrollWidth-innerWidth);
+    const tw=gsap.to(tr,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:hp,start:'top 90px',end:()=>'+='+dist(),pin:true,scrub:.7,invalidateOnRefresh:true,anticipatePin:1}});
+    $$('.pj').forEach(pj=>gsap.from(pj.querySelector('.pv-in'),{scale:.86,ease:'none',scrollTrigger:{trigger:pj,containerAnimation:tw,start:'left 95%',end:'left 40%',scrub:true}}));
+    return()=>{hp.classList.remove('hmode');gsap.set(tr,{clearProps:'all'})}}});
+  addEventListener('load',()=>ScrollTrigger.refresh());if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>ScrollTrigger.refresh());
+}
+})();
+</script>
+</body>
+</html>
